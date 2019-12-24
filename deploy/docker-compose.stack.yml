@@ -18,7 +18,7 @@ services:
        - data_db:/var/lib/mysql # Use bind mount
 
   php:
-    image: wodby/rafa87garcia/azure-drupalphp
+    image: rafa87garcia/azure-drupalphp
     environment:
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
 #      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S opensmtpd:25      
