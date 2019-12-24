@@ -5,7 +5,7 @@ volumes:
 
 services:
   mariadb:
-    image: wodby/mariadb:10.4-3.6.8
+    image: wodby/mariadb:10.3-3.6.8
     stop_grace_period: 30s
     environment:
       MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
@@ -18,7 +18,7 @@ services:
        - data_db:/var/lib/mysql # Use bind mount
 
   php:
-    image: rafa87garcia/azure-drupalphp
+    image: rafa87garcia/azure-drupalphp:latest
     environment:
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
 #      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S opensmtpd:25      
@@ -55,7 +55,7 @@ services:
 #      - files:/mnt/files
 
   nginx:
-    image: rafa87garcia/azure-nginx
+    image: rafa87garcia/azure-nginx:latest
     depends_on:
       - php
     environment:
@@ -78,7 +78,7 @@ services:
     #   - "traefik.http.routers.${PROJECT_NAME}_nginx.rule=Host(`${PROJECT_BASE_URL}`)"
 
   mailhog:
-    image: mailhog/mailhog
+    image: mailhog/mailhog:latest
     ports:
       - "8025:8025"
     # networks:
@@ -255,7 +255,7 @@ services:
 #      - "--whitelisted-ips="
 
   portainer:
-    image: portainer/portainer
+    image: portainer/portainer:latest
     command: --no-auth -H unix:///var/run/docker.sock
     # networks:
     #   - net
@@ -263,14 +263,3 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     # labels:
     #   - "traefik.http.routers.${PROJECT_NAME}_portainer.rule=Host(`portainer.${PROJECT_BASE_URL}`)"
-
-  # traefik:
-  #   image: traefik:v2.0
-  #   networks:
-  #     - net
-  #   command: --api.insecure=true --providers.docker
-  #   ports:
-  #     - '8010:80'
-  #     - '8080:8080' # Dashboard
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
