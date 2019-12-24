@@ -46,12 +46,12 @@ services:
       - "80:80"
 
   mailhog:
-    image: mailhog/mailhog:latest
+    image: mailhog/mailhog
     ports:
       - "8025:8025"
 
   portainer:
-    image: portainer/portainer:latest
+    image: portainer/portainer
     command: --no-auth -H unix:///var/run/docker.sock
     # networks:
     #   - net
