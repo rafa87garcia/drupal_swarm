@@ -3,6 +3,9 @@ version: "3"
 volumes:
   data_db:
 
+networks:
+  net:
+
 services:
   mariadb:
     image: wodby/mariadb:10.3-3.6.8
@@ -12,6 +15,8 @@ services:
       MYSQL_DATABASE: drupal
       MYSQL_USER: drupal
       MYSQL_PASSWORD: drupal
+    networks:
+      - net
     ports:
       - "3306:3306"
     volumes:
@@ -31,12 +36,16 @@ services:
       PHP_FPM_USER: wodby
       PHP_FPM_GROUP: wodby
       COLUMNS: 80 # Set 80 columns for docker exec -it.
+    networks:
+      - net
 
   nginx:
     image: rafa87garcia/azure-nginx
     depends_on:
       - php
       - mariadb
+    networks:
+      - net
     environment:
       NGINX_STATIC_OPEN_FILE_CACHE: "off"
       NGINX_ERROR_LOG_LEVEL: debug
@@ -50,11 +59,13 @@ services:
     image: mailhog/mailhog
     ports:
       - "8025:8025"
+    networks:
+      - net
 
   portainer:
     image: portainer/portainer
     command: --no-auth -H unix:///var/run/docker.sock
-    # networks:
-    #   - net
+    networks:
+      - net
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
