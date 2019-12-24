@@ -6,7 +6,6 @@ volumes:
 services:
   mariadb:
     image: wodby/mariadb:10.4-3.6.8
-    container_name: "${PROJECT_NAME}_mariadb"
     stop_grace_period: 30s
     environment:
       MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
@@ -20,7 +19,6 @@ services:
 
   php:
     image: wodby/rafa87garcia/azure-drupalphp
-    container_name: "${PROJECT_NAME}_php"
     environment:
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
 #      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S opensmtpd:25      
@@ -58,7 +56,6 @@ services:
 
   nginx:
     image: rafa87garcia/azure-nginx
-    container_name: "${PROJECT_NAME}_nginx"
     depends_on:
       - php
     environment:
@@ -82,7 +79,6 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    container_name: "${PROJECT_NAME}_mailhog"
     ports:
       - "8025:8025"
     # networks:
@@ -93,7 +89,6 @@ services:
 
 #  postgres:
 #    image: wodby/postgres:$POSTGRES_TAG
-#    container_name: "${PROJECT_NAME}_postgres"
 #    stop_grace_period: 30s
 #    environment:
 #      POSTGRES_PASSWORD: $DB_PASSWORD
@@ -105,7 +100,6 @@ services:
 
 #  apache:
 #    image: wodby/apache:$APACHE_TAG
-#    container_name: "${PROJECT_NAME}_apache"
 #    depends_on:
 #      - php
 #    environment:
@@ -123,7 +117,6 @@ services:
 
 #  varnish:
 #    image: wodby/varnish:$VARNISH_TAG
-#    container_name: "${PROJECT_NAME}_varnish"
 #    depends_on:
 #      - nginx
 #    environment:
@@ -137,11 +130,9 @@ services:
 #      - "traefik.http.routers.${PROJECT_NAME}_varnish.rule=Host(`varnish.${PROJECT_BASE_URL}`)"
 
 #  redis:
-#    container_name: "${PROJECT_NAME}_redis"
 #    image: wodby/redis:$REDIS_TAG
 
 #  adminer:
-#    container_name: "${PROJECT_NAME}_adminer"
 #    image: wodby/adminer:$ADMINER_TAG
 #    environment:
 ## For PostgreSQL:
@@ -153,7 +144,6 @@ services:
 
 #  pma:
 #    image: phpmyadmin/phpmyadmin
-#    container_name: "${PROJECT_NAME}_pma"
 #    environment:
 #      PMA_HOST: $DB_HOST
 #      PMA_USER: $DB_USER
@@ -165,7 +155,6 @@ services:
 
 #  solr:
 #    image: wodby/solr:$SOLR_TAG
-#    container_name: "${PROJECT_NAME}_solr"
 #    environment:
 #      SOLR_DEFAULT_CONFIG_SET: $SOLR_CONFIG_SET
 #      SOLR_HEAP: 1024m
@@ -174,7 +163,6 @@ services:
 
 #  drupal-node:
 #    image: wodby/drupal-node:$DRUPAL_NODE_TAG
-#    container_name: "${PROJECT_NAME}_drupal_nodejs"
 #    environment:
 #       NODE_SERVICE_KEY: node-service-key
 #    labels:
@@ -184,16 +172,13 @@ services:
 #    command: sh -c 'npm install && npm run start'
 
 #  memcached:
-#    container_name: "${PROJECT_NAME}_memcached"
 #    image: wodby/memcached:$MEMCACHED_TAG
 
 #  rsyslog:
-#    container_name: "${PROJECT_NAME}_rsyslog"
 #    image: wodby/rsyslog:$RSYSLOG_TAG
 
 #  athenapdf:
 #    image: arachnysdocker/athenapdf-service:$ATHENAPDF_TAG
-#    container_name: "${PROJECT_NAME}_athenapdf"
 #    environment:
 #      WEAVER_AUTH_KEY: weaver-auth-key
 #      WEAVER_ATHENA_CMD: "athenapdf -S"
@@ -204,7 +189,6 @@ services:
 
 #  node:
 #    image: wodby/node:$NODE_TAG
-#    container_name: "${PROJECT_NAME}_node"
 #    working_dir: /var/www/html/path/to/theme/to/build
 #    labels:
 #      - "traefik.http.services.${PROJECT_NAME}_node.loadbalancer.server.port=3000"
@@ -217,14 +201,12 @@ services:
 
 #  blackfire:
 #    image: blackfire/blackfire
-#    container_name: "${PROJECT_NAME}_blackfire"
 #    environment:
 #      BLACKFIRE_SERVER_ID: XXXXX
 #      BLACKFIRE_SERVER_TOKEN: YYYYY
 
 #  webgrind:
 #    image: wodby/webgrind:$WEBGRIND_TAG
-#    container_name: "${PROJECT_NAME}_webgrind"
 #    environment:
 #      WEBGRIND_PROFILER_DIR: /mnt/files/xdebug/profiler
 #    labels:
@@ -250,7 +232,6 @@ services:
 #      - "traefik.http.routers.${PROJECT_NAME}_kibana.rule=Host(`kibana.${PROJECT_BASE_URL}`)"
 
 #  opensmtpd:
-#    container_name: "${PROJECT_NAME}_opensmtpd"
 #    image: wodby/opensmtpd:$OPENSMTPD_TAG
 
 #  xhprof:
@@ -263,7 +244,6 @@ services:
 
 #  chrome:
 #    image: selenium/standalone-chrome:$SELENIUM_CHROME_TAG
-#    container_name: "${PROJECT_NAME}_chrome"
 #    volumes:
 #      - /dev/shm:/dev/shm
 #    entrypoint:
@@ -276,7 +256,6 @@ services:
 
   portainer:
     image: portainer/portainer
-    container_name: "${PROJECT_NAME}_portainer"
     command: --no-auth -H unix:///var/run/docker.sock
     # networks:
     #   - net
@@ -287,7 +266,6 @@ services:
 
   # traefik:
   #   image: traefik:v2.0
-  #   container_name: "${PROJECT_NAME}_traefik"
   #   networks:
   #     - net
   #   command: --api.insecure=true --providers.docker
