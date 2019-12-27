@@ -9,21 +9,25 @@ networks:
 services:
   mariadb:
     image: wodby/mariadb:10.3-3.6.8
+    networks:
+      - net
     stop_grace_period: 30s
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: drupal
       MYSQL_USER: drupal
       MYSQL_PASSWORD: drupal
-    networks:
-      - net
     ports:
       - "3306:3306"
     volumes:
       - data_db:/var/lib/mysql # Use bind mount
 
   php:
-    image: rafa87garcia/azure-drupalphp:latest
+    image: rafa87garcia/azure-drupalphp
+    networks:
+      - net
+    depends_on:
+      - mariadb
     environment:
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
 #      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S opensmtpd:25
@@ -36,11 +40,10 @@ services:
       PHP_FPM_USER: wodby
       PHP_FPM_GROUP: wodby
       COLUMNS: 80 # Set 80 columns for docker exec -it.
-    networks:
-      - net
+
 
   nginx:
-    image: rafa87garcia/azure-nginx:latest
+    image: rafa87garcia/azure-nginx
     depends_on:
       - php
       - mariadb
